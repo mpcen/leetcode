@@ -17,6 +17,9 @@ return [0, 1].
  * @param {number} target
  * @return {number[]}
  */
+
+// SOLUTION USING ONE-PASS HASHTABLE.
+// O(n) time, O(n) space
 var twoSum = function(nums, target) {
     const ht = {};
     
