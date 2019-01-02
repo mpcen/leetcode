@@ -18,70 +18,67 @@
 //              Note that the answer must be a substring, "pwke" is a subsequence and not a substring.
 
 // O(n) solution
-const lengthOfLongestSubstring = (str) => {
+var lengthOfLongestSubstring = function(s) {
+    if(s.length === 0 || s.length === 1) return s.length;
+    
     const set = new Set();
-    let currentCount = 0;
-    let highestCount = 0;
-
-    for(let char of str) {
-        if(!set.has(char)) {
-            set.add(char);
-
-            currentCount++
-
-            if(currentCount > highestCount) {
-                highestCount = currentCount;
-            }
+    let longest = 0, current = 0;
+    
+    for (let i = 0; i < s.length; i++) {
+        if(!set.has(s.charAt(i))) {
+            set.add(s.charAt(i));
+            current++;
+            
+            if(current > longest) longest = current;
         } else {
-            for(let item of set) {
-                set.delete(item);
-
-                currentCount--;
-
-                if(item === char) {
-                    break;
-                }
+            for(let char of set) {
+                set.delete(char);
+                current--;
+                
+                if(char === s.charAt(i)) break;
             }
-
-            set.add(char);
-            currentCount++;
+            
+            set.add(s.charAt(i));
+            current++;
         }
     }
-
-    return highestCount;
-}
-
-console.log(lengthOfLongestSubstring('a'));
-
-// O(n^2) solution
-// const lengthOfLongestSubstring = (str) => {
-//     const set = new Set();
-//     let substr = '';
-//     let longestLength = 0;
-//     let currentLength = 0;
-
-//     for(let i = 0; i < str.length; i++) {
-//         substr += str.charAt(i);
-//         set.add(str.charAt(i));
-//         currentLength++;
-
-//         for(let j = i + 1; j < str.length; j++) {
-//             const nextChar = str.charAt(j);
-
-//             if(!set.has(nextChar)) {
-//                 substr += nextChar;
-//                 set.add(nextChar);
-//                 currentLength++;
-//             } else {
-//                 if(currentLength > longestLength) {
-//                     longestLength = currentLength;
-//                     currentLength = 0;
-//                     substr = '';
-//                     set.clear();
-//                 }
-//             }
-//         }
-//     }
-
-//     return longestLength;
-// }
+    
+    return longest
+};
+/**
+ * @param {string} s
+ * @return {number}
+ 
+ 
+ p w w k e w
+     i
+       j
+ 
+ { p, w }
+ longest = 2
+ 
+ */
+var lengthOfLongestSubstring = function(s) {
+    if(s.length === 0 || s.length === 1) return s.length;
+    
+    const set = new Set();
+    let longest = 0, current = 0;
+    
+    for (let i = 0; i < s.length - 1; i++) {
+        set.clear();
+        set.add(s.charAt(i));
+        current = 1;
+        if(current > longest) longest = current;
+        
+        for (let j = i + 1; j < s.length; j++) {
+            if(!set.has(s.charAt(j))) {
+                set.add(s.charAt(j));
+                current++;
+                
+                if(current > longest) longest = current;
+            } else break;
+        }
+    }
+    
+    return longest
+};
