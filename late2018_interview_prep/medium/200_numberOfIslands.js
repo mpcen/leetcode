@@ -21,38 +21,44 @@
 
 // Output: 3
 
-// NOTE: I used weak equality checking (==) instead of strong equality checking (===)
-// to handle both true numbers (ex: 3) and string representations of numbers (ex: '3')
+/**
+ * @param {character[][]} grid
+ * @return {number}
+ 
+        xx000
+        xx000
+        00x00
+        000xx
 
-const numIslands = grid => {
-    let totalIslands = 0;
-
+        count: 3
+ */
+var numIslands = function(grid) {
+    let count = 0;
+    
     for(let i = 0; i < grid.length; i++) {
         for(let j = 0; j < grid[0].length; j++) {
-            if(grid[i][j] != 0 && grid[i][j] != -1)
-                totalIslands += numIslandsHelper(grid, i, j);
+            if(grid[i][j] === '1') {
+                count++
+                dfs(i, j, grid);
+            }
         }
     }
-
-    return totalIslands;
-}
-
-const numIslandsHelper = (grid, row, col) => {
-    // base case 1: if out of bounds
-    if(row < 0 || row >= grid.length || col < 0 || col >= grid[0].length) return;
-    // base case 2: if water
-    if(grid[row][col] == 0) return;
-    // base case 3: if already explored
-    if(grid[row][col] == -1) return;
-
-    // mark it as explored
-    grid[row][col] = -1;
-
-    // perform recursive DFS
-    numIslandsHelper(grid, row - 1, col); // explore top
-    numIslandsHelper(grid, row, col + 1); // explore right
-    numIslandsHelper(grid, row + 1, col); // explore bottom
-    numIslandsHelper(grid, row, col - 1); // explore left
-
-    return 1;
+    
+    return count;
 };
+
+function dfs(i, j, grid) {
+    if(grid[i][j] === '1') grid[i][j] = 'x';
+    
+    // explore right
+    if(j !== grid[0].length - 1 && grid[i][j+1] === '1') dfs(i, j+1, grid);
+    
+    // explore down
+    if(i !== grid.length - 1 && grid[i+1][j] === '1') dfs(i+1, j, grid);
+    
+    // explore left
+    if(j !== 0 && grid[i][j-1] === '1') dfs(i, j-1, grid);
+    
+    // explore up
+    if(i !== 0 && grid[i-1][j] === '1') dfs(i-1, j, grid);
+}
