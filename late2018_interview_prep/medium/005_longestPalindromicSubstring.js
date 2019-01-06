@@ -11,48 +11,33 @@
 // Output: "bb"
 
 
-const longestPalindrome = s => {
-    const dp = [];
-    let maxLength = 1, longestPal = s.charAt(0);
-
-    // build empty dp matrix
-    for(let i = 0; i < s.length; i++) {
-        dp.push(new Array(s.length))
-    }
-
-    // set 1-char values to true
-    for(let i = 0; i < s.length; i++) {
-        dp[i][i] = true;
-    }
-
-    // check for 2-char values since you can't look up the prev values (next row, prev col)
-    for(let i = 0; i < s.length - 1; i++) {
-        const str = s.substring(i, i + 2);
-        
-        dp[i][i+1] = str.charAt(0) === str.charAt(1) ? true : false;
-
-        if(dp[i][i+1]) {
-            longestPal = str;
-            maxLength = 2;
-        }
-    }
-
+var longestPalindrome = function(s) {
+    if(s.length === 1) return s;
     
-    for(let currentLength = 3; currentLength <= s.length; currentLength++) {
-        for(let j = 0; j <= s.length - currentLength; j++) {
-            const str = s.substring(j, j + currentLength);
-
-            // if first and last chars match AND the prev value was a palindrome, do the thing
-            dp[j][currentLength - 1 + j] =
-                str.charAt(0) === str.charAt(str.length - 1) && dp[j+1][j+currentLength - 2] ? true : false
-            
-            if(dp[j][currentLength - 1 + j]) {
-                maxLength = str.length;
-                longestPal = str;
-            }
-            
-        }   
+    let maxLength = 1, beginsAt = 0, currentLength = 3;
+    let matrix = [];
+    
+    for(let i = 0; i < s.length; i++) matrix.push(new Array(s.length));
+    for(let i = 0; i < s.length; i++) matrix[i][i] = true;
+    for(let i = 0; i < s.length - 1; i++) {
+        if(s.charAt(i) === s.charAt(i+1)) {
+            maxLength = 2;
+            beginsAt = i;
+            matrix[i][i+1] = true;
+        } else matrix[i][i+1] = false;
     }
-
-    return longestPal;
-}
+    
+    while(currentLength <= s.length) {
+        for(let i = 0; i <= s.length - currentLength; i++) {
+            const str = s.substring(i, i+currentLength);
+            if(str.charAt(0) === str.charAt(str.length - 1) && matrix[i+1][i + currentLength - 2]) {
+                beginsAt = i;
+                maxLength = currentLength;
+                matrix[i][currentLength - 1 + i] = true;
+            } else matrix[i][currentLength - 1 + i] = false;
+        }
+        currentLength++;
+    }
+    
+    return s.substring(beginsAt, beginsAt + maxLength);
+};
