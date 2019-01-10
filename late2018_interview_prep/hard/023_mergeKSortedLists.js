@@ -57,3 +57,58 @@ function sort(arr) {
         return 0;
     });
 }
+
+// Solution w/ Priority Queue
+var mergeKLists = function(lists) {
+    const q = new PriorityQueue();
+    const newListHead = new ListNode(-1);
+    let current = newListHead, empty = false;
+    
+    for(let list of lists) {
+        while(list) {
+            q.enqueue(list.val);
+            list = list.next;
+        }
+    }
+    
+    empty = q.isEmpty();
+    
+    while(!empty) {
+        const newListNode = new ListNode(q.dequeue());
+        current.next = newListNode;
+        current = current.next;
+        empty = q.isEmpty();
+    }
+    
+    return newListHead.next;
+};
+
+class PriorityQueue {
+    constructor() {
+        this.items = [];
+    }
+    
+    enqueue(val) {
+        if(!this.items.length) this.items.push(val);
+        else {
+            let added = false;
+            for(let i = 0; i < this.items.length; i++) {
+                if(val > this.items[i]) {
+                    this.items.splice(i, 0, val);
+                    added = true;
+                    break;
+                }
+            }
+            
+            if(!added) this.items.push(val);
+        }
+    }
+    
+    dequeue() {
+        return this.items.pop();
+    }
+    
+    isEmpty() {
+        return this.items.length === 0;
+    }
+}
