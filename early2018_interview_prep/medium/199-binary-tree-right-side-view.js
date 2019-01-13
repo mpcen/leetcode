@@ -45,7 +45,7 @@ var rightSideView = function(root) {
 
     	if(queue[0] === 'end') {
     		results.push(node.val);
-    		node = queue.shift();
+    		queue.shift();
     		queue.push(node);
     	}
     }
