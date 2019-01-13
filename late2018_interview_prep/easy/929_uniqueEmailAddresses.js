@@ -38,7 +38,7 @@
  testemail@leetcode.com
  testemail@leetcode.com
  testemail
- 
+
  */
 var numUniqueEmails = function(emails) {
     if(!emails.length) return 0;
