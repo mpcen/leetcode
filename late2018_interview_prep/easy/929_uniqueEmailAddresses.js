@@ -1,9 +1,9 @@
 // 929. Unique Email Addresses
 // Easy
 
-// 259
+// 272
 
-// 67
+// 72
 
 // Favorite
 
@@ -29,33 +29,55 @@
 // Input: ["test.email+alex@leetcode.com","test.e.mail+bob.cathy@leetcode.com","testemail+david@lee.tcode.com"]
 // Output: 2
 // Explanation: "testemail@leetcode.com" and "testemail@lee.tcode.com" actually receive mails
+ 
+
+// Note:
+
+// 1 <= emails[i].length <= 100
+// 1 <= emails.length <= 100
+// Each emails[i] contains exactly one '@' character.
 
 /**
  * @param {string[]} emails
  * @return {number}
  
- ["test.email+alex@leetcode.com","test.e.mail+bob.cathy@leetcode.com","testemail+david@lee.tcode.com"]
- testemail@leetcode.com
- testemail@leetcode.com
- testemail
-
+ alice@leetcode.com:
+     localName = alice
+     domainName = leetcode.com
+     
+     
+     may also contain '.' or '+'
+     
+     alice.z@leetcode.com == alicez@leetcode.com
+     alic.e+zz33.s@leetcode.com == alice@leetcode.com
+     
+     input: ["test.email+alex@leetcode.com","test.e.mail+bob.cathy@leetcode.com","testemail+david@lee.tcode.com"]
+                        i
+                        
+     pair = [test.email+alex, leetcode.com]
+                     j
+                     
+     local = [test.email, alex]
+                  k
+                  
+     name = [test, email]
+     name = testemail
+     
+     domainSet = { leetcode.com }
+     
  */
 var numUniqueEmails = function(emails) {
     if(!emails.length) return 0;
-    const set = new Set();
     
-    emails.forEach(email => {
-        const _email = getLocalName(email);
-        if(!set.has(_email)) set.add(_email);
-    });
+    const finalSet = new Set();
     
-    return set.size;
+    for(let i = 0; i < emails.length; i++) {
+        let pair = emails[i].split('@');
+        let local = pair[0].split('+');
+        let name = local[0].split('.');
+        name = name.join('');
+        finalSet.add(name+pair[1]);
+    }
+    
+    return finalSet.size;
 };
-
-function getLocalName(s) {
-    const email = s.split('@'),
-          localName = email[0].split('+')[0].split('.').join(''),
-          domainName = email[1];
-    
-    return localName + domainName;
-}
