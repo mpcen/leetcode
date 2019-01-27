@@ -26,3 +26,29 @@ const maxSubArray = nums => {
 
     return maxSoFar;
 };
+
+// Modification that returns subarray
+var maxSubArray = function(nums) {
+    let sumSoFar = 0,
+        maxSum = Number.MIN_SAFE_INTEGER,
+        start = 0,
+        end = 0,
+        j = 0;
+    
+    for(let i = 0; i < nums.length; i++) {
+        sumSoFar += nums[i];
+        
+        if(sumSoFar >= maxSum) {
+            maxSum = sumSoFar;
+            start = j;
+            end = i;
+        }
+
+        if(sumSoFar < 0) {
+            sumSoFar = 0;
+            j = i + 1;
+        }
+    }
+    
+    return nums.slice(start, end + 1);
+};
