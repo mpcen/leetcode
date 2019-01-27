@@ -58,3 +58,28 @@ const threeSum = function(nums) {
 
     return res;
 }
+
+var CLEANER_BUT_SLOWER_threeSum = function(nums) {
+    const sumSet = new Map();
+    let sum = 0;
+    
+    nums = sort(nums);
+    
+    for(let i = 0; i < nums.length - 2; i++) {
+        let p1 = i+1, p2 = nums.length - 1;
+        
+        while(p1 < p2) {
+            sum = nums[i] + nums[p1] + nums[p2];
+            
+            if(sum < 0) p1++;
+            else if(sum > 0) p2--;
+            else {
+                sumSet.set([nums[i], nums[p1], nums[p2]].toString(), [nums[i], nums[p1], nums[p2]]);
+                p1++;
+                p2--;
+            }
+        }
+    }
+    
+    return [...sumSet.values()]
+};
