@@ -66,7 +66,10 @@ var serialize = function(root) {
  */
 var deserialize = function(data) {
     if(!data) return null;
-    const dataArr = data.split(','), root = new TreeNode(parseInt(dataArr.shift())), queue = [];
+    
+    const dataArr = data.split(','),
+          root = new TreeNode(parseInt(dataArr.shift())),
+          queue = [];
     let current = root;
     
     while(dataArr.length) {
