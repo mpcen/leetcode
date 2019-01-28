@@ -36,3 +36,22 @@ var reverse = function(x) {
     else if(x < 0) return reversed * -1;
     return reversed;
 };
+
+// Another solution that has same runtime but easier to understand, i think
+var reverse = function(x) {
+    if(x === 0) return 0;
+    
+    const MIN = -2147483648,
+          MAX = 2147483647,
+          isNeg = x < 0;
+    
+    if(isNeg) x *= -1;
+    
+    let reversed = parseInt(x.toString().split('').reverse().join(''));
+    
+    reversed *= isNeg ? -1 : 1;
+    
+    if(reversed <= MIN || reversed >= MAX) return 0;
+    
+    return reversed;
+};
