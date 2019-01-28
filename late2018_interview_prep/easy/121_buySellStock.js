@@ -47,3 +47,35 @@ var maxProfit = function(prices) {
 
     return profit;
 };
+
+// Using Kadane's Algorithm
+/**
+ * 
+     prices[i] - prices[j]
+ 
+    0  1  2  3   4  5   6
+   [7, 4, 5, 1, 14, 11, 98]
+                        i
+             j
+  
+  currentProfit: 97
+  maxSoFar: 13
+  
+ */
+var maxProfit = function(prices) {
+    let maxSoFar = 0,
+        currentProfit = 0,
+        j = 0;
+    
+    for(let i = 1; i < prices.length; i++) {
+        currentProfit = prices[i] - prices[j];
+        
+        if(currentProfit > maxSoFar) {
+            maxSoFar = currentProfit;
+        } else if(currentProfit < 0) {
+            j = i;
+        }
+    }
+    
+    return maxSoFar;
+};
