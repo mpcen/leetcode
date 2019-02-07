@@ -9,19 +9,20 @@
 // Input: [1,8,6,2,5,4,8,3,7]
 // Output: 49
 
-const maxArea = function(heights) {
-    let p1 = 0,
-        p2 = heights.length - 1,
-        maxAreaSoFar = 0;
-
-    while(p1 < p2) {
-        const length = p2 - p1,
-              height = Math.min(heights[p1], heights[p2]),
-              currentArea = length * height;
+var maxArea = function(height) {
+    if(!height.length) return 0;
+    
+    let i = 0,
+        j = height.length - 1,
+        max = 0;
+    
+    while(i < j) {
+        let area = (j - i) * Math.min(height[i], height[j]);
         
-        maxAreaSoFar = currentArea > maxAreaSoFar ? currentArea : maxAreaSoFar;
-        heights[p1] <= heights[p2] ? p1++ : p2--;
+        if(area > max) max = area;
+        
+        height[i] < height[j] ? i++ : j--;
     }
-
-    return maxAreaSoFar;
+    
+    return max;
 };
